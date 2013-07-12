@@ -9,10 +9,15 @@ def float_eq(a, b):
     absA = abs(a)
     absB = abs(b)
     diff = abs(a - b)
-    
+    """
     if a == b:
         return True
     elif a == 0 or b == 0 or diff < _float_min:
+        return diff < (_epsilon * _float_min)
+    else:
+        return diff / (absA + absB) < _epsilon
+    """
+    if a == 0 or b == 0 or diff < _float_min:
         return diff < (_epsilon * _float_min)
     else:
         return diff / (absA + absB) < _epsilon
