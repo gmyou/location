@@ -27,7 +27,7 @@ step = 0.1
 lats = xxrange(18.0, 64.0, step)
 lngs = xxrange(-124.0, -66.0, step)
  
-locs = reversed([(lat, lng) for lat, lng in product(lats, lngs) if not float_eq(lat, lng)])
+locs = reversed([(round(lat, 1), round(lng, 1)) for lat, lng in product(lats, lngs) if not float_eq(lat, lng)])
  
 for i, loc in enumerate(locs):                                                  
     print i, loc
