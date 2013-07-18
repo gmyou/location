@@ -1,38 +1,55 @@
-from itertools import product
-from sys import float_info
-from multiprocessing import Process
+import os
+import datetime
+from multiprocessing import Process, Queue
+from Queue import Empty
+import time
+
+curdate = str(datetime.datetime.now())
+curdate = curdate[:10].replace("-", "")
+
+logFile = '/data/yelp/logs/store_'+curdate+'.log'
 
 
-_float_min = float_info.min
-_epsilon = float_info.epsilon
- 
-def float_eq(a, b):
-    absA = abs(a)
-    absB = abs(b)
-    diff = abs(a - b)
-    
-    if a == 0 or b == 0 or diff < _float_min:
-        return diff < (_epsilon * _float_min)
-    else:
-        return diff / (absA + absB) < _epsilon
- 
-def xxrange(start, stop, step=1):
-    cur = start
-    while cur < stop:
-        yield cur
-        cur += step
+#state = ('nv',)		
+state = ('nv','ne','nd','nc','nm','ny','nj','nh','de','ri','la','ma','md','me','mt','mn','mi','ms','mo','vt','va','sd','sc','id','ia','ar','ak','az','al','or','ok','oh','wy','wa','wv','wi','ut','in','il','ga','ks','ca','ky','ct','co','tn','tx','pa','fl','hi')
 
-def f(names):
-    print names
+
+def do_work(q, loc):
+	
+	z = 0
+	
+	while z<500:
+		try:
+			
+			f = open(logFile, 'a')
+	
+			url_params = '-l="'+loc+'" -q="food" --offset='+str(z)
+
+			#Log				
+			f.write(loc+'\t'+str(z)+'\n')
+		
+			#Json
+			os.system('python yelp.py '+url_params+' >> /data/yelp/store/'+loc+'.json')
+	
+			z+=1
+			time.sleep(0.1)
+			
+		except Empty:
+			break
+	
+		finally:
+			f.close()
 
 if __name__ == '__main__':
-     
-    step = 0.1
-    lats = xxrange(18.0, 64.0, step)
-    lngs = xxrange(-124.0, -66.0, step)
-     
-    locs = reversed([(round(lat, 1), round(lng, 1)) for lat, lng in product(lats, lngs) if not float_eq(lat, lng)])
-
-    p = Process(target=f, args=locs)
-    p.start()
-    p.join()
+	work_queue = Queue()
+	
+	for i in range(1,50):
+		work_queue.put(i)
+	
+	processes = [Process(target=do_work, args=(work_queue, loc, )) for loc in state]
+	
+	for p in processes:
+		p.start()
+		
+	for p in processes:	
+		p.join()
