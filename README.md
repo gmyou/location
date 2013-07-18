@@ -1,3 +1,4 @@
+#grid
 US LOCATION Grid
 
     LAT                   LONG
@@ -18,3 +19,29 @@ Output
         .
         (64.0, -124.0), (63.9, -124.0), (63.8, -124.0), ..., (18.0, -124.0)
     ]
+
+#thread
+Yelp API 호출
+
+    각주마다 500번의 쿼리 (limit제한떄문에)
+    
+    
+Output 
+
+    Log
+    
+        주[\t]쿼리순번
+        ny  0
+        .
+        .
+        .
+        hi 499
+        
+    Json
+    
+        주.json
+        ny.json
+        .
+        .
+        .
+        hi.json
