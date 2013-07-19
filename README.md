@@ -26,6 +26,10 @@ Yelp API 호출
     각주마다 500번의 쿼리 (limit제한때문에)
     
     
+필요사항
+
+    easy_install oauth2
+
 Output 
 
     Log
