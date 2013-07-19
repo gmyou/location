@@ -39,8 +39,19 @@ def do_work(q, loc):
 	
 		finally:
 			f.close()
+			
+
+def init_file():
+	
+	for loc in state:
+		
+		os.system('rm /data/yelp/store/'+loc+'.json')
+			
 
 if __name__ == '__main__':
+	
+	init_file()
+	
 	work_queue = Queue()
 	
 	for i in range(1,50):
