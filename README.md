@@ -28,7 +28,7 @@ Yelp API 호출
     
 필요사항
 
-    easy_install oauth2
+    sudo easy_install oauth2
 
 Output 
 
