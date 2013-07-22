@@ -44,8 +44,11 @@ def do_work(q, loc):
 def init_file():
 	
 	for loc in state:
-		
-		os.system('rm /data/yelp/store/'+loc+'.json')
+		try:
+		   with open('/data/yelp/store/'+loc+'.json'):
+		       os.system('rm /data/yelp/store/'+loc+'.json')
+		except IOError:
+		   print '/data/yelp/store/'+loc+'.json is not exist.'
 			
 
 if __name__ == '__main__':
@@ -64,3 +67,4 @@ if __name__ == '__main__':
 		
 	for p in processes:	
 		p.join()
+	
