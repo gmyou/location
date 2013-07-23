@@ -28,6 +28,7 @@ Yelp API 호출
     
 필요사항
 
+    python version 2.6 over
     sudo easy_install oauth2
     sudo easy_install simplejson
 
