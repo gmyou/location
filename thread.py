@@ -1,4 +1,4 @@
-import os
+import os, sys
 import datetime
 from multiprocessing import Process, Queue
 from Queue import Empty
@@ -7,29 +7,32 @@ import time
 curdate = str(datetime.datetime.now())
 curdate = curdate[:10].replace("-", "")
 
-logFile = '/data/yelp/logs/store_'+curdate+'.log'
+
 
 
 #state = ('nv',)		
 state = ('nv','ne','nd','nc','nm','ny','nj','nh','de','ri','la','ma','md','me','mt','mn','mi','ms','mo','vt','va','sd','sc','id','ia','ar','ak','az','al','or','ok','oh','wy','wa','wv','wi','ut','in','il','ga','ks','ca','ky','ct','co','tn','tx','pa','fl','hi')
 
 
-def do_work(q, loc):
+def do_work(q, term, loc):
 	
 	z = 0
+	logFile = '/data/yelp/logs/'+term+'_'+curdate+'.log'
 	
+	#while z<1:
 	while z<500:
 		try:
 			
 			f = open(logFile, 'a')
 	
-			url_params = '-l="'+loc+'" -q="food" --offset='+str(z)
+			url_params = '-l="'+loc+'" -q="'+term+'" --offset='+str(z)
 
 			#Log				
 			f.write(loc+'\t'+str(z)+'\n')
 		
 			#Json
-			os.system('python yelp.py '+url_params+' >> /data/yelp/store/'+loc+'.json')
+			o = '/data/yelp/json/'+term+'_'+loc+'.json'
+			os.system('python yelp.py '+url_params+' >> '+o)
 	
 			z+=1
 			time.sleep(0.1)
@@ -41,30 +44,51 @@ def do_work(q, loc):
 			f.close()
 			
 
-def init_file():
+def init_file(term):
 	
 	for loc in state:
+		
+		f = '/data/yelp/json/'+term+'_'+loc+'.json'
+		print f
+		os.system('rm '+f)
+		
+		"""
 		try:
-		   with open('/data/yelp/store/'+loc+'.json'):
-		       os.system('rm /data/yelp/store/'+loc+'.json')
-		except IOError:
-		   print '/data/yelp/store/'+loc+'.json is not exist.'
+            os.system('rm /data/yelp/json/'+term+'_'+loc+'.json')
+        except IOError:
+            pass
+        """
 			
-
+"""
+def isNumber(s):
+    try:
+        float(s)
+		return True
+	except ValueError:
+		return False
+"""   
+   
 if __name__ == '__main__':
 	
-	init_file()
+	term = ""
+	
+	if len(sys.argv) == 1:
+	    print "Your must select option - 'restaurant' or 'food' ?"
+	    exit(0)
+	
+	term = sys.argv[1]
+		
+	init_file(term)
 	
 	work_queue = Queue()
 	
 	for i in range(1,50):
 		work_queue.put(i)
 	
-	processes = [Process(target=do_work, args=(work_queue, loc, )) for loc in state]
+	processes = [Process(target=do_work, args=(work_queue, term, loc, )) for loc in state]
 	
 	for p in processes:
 		p.start()
 		
 	for p in processes:	
 		p.join()
-	
