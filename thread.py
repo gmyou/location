@@ -73,7 +73,7 @@ if __name__ == '__main__':
 	term = ""
 	
 	if len(sys.argv) == 1:
-	    print "Your must select option - 'restaurant' or 'food' ?"
+	    print "Select option - 'restaurant' or 'food' ?"
 	    exit(0)
 	
 	term = sys.argv[1]
