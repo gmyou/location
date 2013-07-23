@@ -24,6 +24,7 @@ Output
 Yelp API 호출
 
     각주마다 500번의 쿼리 (limit제한때문에)
+    $Your must select option - 'restaurant' or 'food' ?
     
     
 필요사항
