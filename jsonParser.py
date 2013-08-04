@@ -2,6 +2,7 @@
 # jsonParser.py
 from json import dumps, loads, JSONEncoder, JSONDecoder
 import pickle
+from types import *
 
 class PythonObjectEncoder(JSONEncoder):
     def default(self, obj):
@@ -14,13 +15,16 @@ def as_python_object(dct):
         return pickle.loads(str(dct['_python_object']))
     return dct
 
-f = open("sample.json")
-#f = open("/data/yelp/store/sample.json")
+#f = open("sample.json")
+f = open("/data/yelp/json/restaurant_nv_0.json")
 
 j = dumps(f.read(), cls=PythonObjectEncoder)
 
 data = loads(j, object_hook=as_python_object)
 
 print data
+
+print type(data)
+
 
 f.close()

@@ -10,8 +10,8 @@ curdate = curdate[:10].replace("-", "")
 
 
 
-#state = ('nv',)		
-state = ('nv','ne','nd','nc','nm','ny','nj','nh','de','ri','la','ma','md','me','mt','mn','mi','ms','mo','vt','va','sd','sc','id','ia','ar','ak','az','al','or','ok','oh','wy','wa','wv','wi','ut','in','il','ga','ks','ca','ky','ct','co','tn','tx','pa','fl','hi')
+state = ('nv',)		
+#state = ('nv','ne','nd','nc','nm','ny','nj','nh','de','ri','la','ma','md','me','mt','mn','mi','ms','mo','vt','va','sd','sc','id','ia','ar','ak','az','al','or','ok','oh','wy','wa','wv','wi','ut','in','il','ga','ks','ca','ky','ct','co','tn','tx','pa','fl','hi')
 
 
 def do_work(q, term, loc):
@@ -19,8 +19,8 @@ def do_work(q, term, loc):
 	z = 0
 	logFile = '/data/yelp/logs/'+term+'_'+curdate+'.log'
 	
-	#while z<1:
-	while z<500:
+	while z<1:
+	#while z<500:
 		try:
 			
 			f = open(logFile, 'a')
@@ -31,7 +31,7 @@ def do_work(q, term, loc):
 			f.write(loc+'\t'+str(z)+'\n')
 		
 			#Json
-			o = '/data/yelp/json/'+term+'_'+loc+'.json'
+			o = '/data/yelp/json/'+term+'_'+loc+'_'+str(z)+'.json'
 			os.system('python yelp.py '+url_params+' >> '+o)
 	
 			z+=1
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 	
 	term = sys.argv[1]
 		
-	init_file(term)
+	#init_file(term)
 	
 	work_queue = Queue()
 	
