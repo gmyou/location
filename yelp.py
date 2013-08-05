@@ -126,7 +126,9 @@ datas = []
 for k, v in data.iteritems():
     if (k=='businesses'):
         datas.append(v)
-
+    if (k=='total'):
+        #Total Count Input Action
+        pass
 
 print json.dumps(datas, sort_keys=True, indent=2)
 #f = open('/data/yelp/store/'+url_params['location']+'.json', 'w')
