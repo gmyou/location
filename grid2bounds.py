@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from itertools import product
 from sys import float_info
  
@@ -29,15 +31,30 @@ def xxrange(start, stop, step=1):
         cur += step
  
 step = 0.1
-lats = xxrange(18.0, 64.0, step)
-lngs = xxrange(-124.0, -66.0, step)
- 
-locs = reversed([(round(lat, 1), round(lng, 1)) for lat, lng in product(lats, lngs) if not float_eq(lat, lng)])
+#lats = xxrange(18.0, 64.0, step)
+#lngs = xxrange(-124.0, -66.0, step)
 
-f = open('grid_ca', 'w')
+"""
+CA
+NEÆÀƮ : 41.9,-114.4
+SWÆÀƮ : 32.2,-123.9
+"""
 
-for i, loc in enumerate(locs):                                                  
-    print i, loc
-    f.write(str(loc)+"\n")
+f = open('grid_ca', 'r')
+
+pos = []
+
+for loc in f:                                                  
+    s = loc[1:-2].replace(' ', '')
+    ne = s.split(',')
+    pos.append(ne)
     
 f.close()
+
+for ne in pos:
+    sw1 = float(ne[0])-0.1
+    sw2 = float(ne[1])-0.1
+    s = ne[0] + ',' + ne[1] + '|' + str(sw1) + ',' + str(sw2)
+    print s
+    
+
